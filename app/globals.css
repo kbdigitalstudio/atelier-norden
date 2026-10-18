@@ -74,7 +74,7 @@ body {
   }
 }
 
-.reveal.entered {
+.reveal[data-entered="true"] {
   opacity: 1;
   transform: none;
 }
