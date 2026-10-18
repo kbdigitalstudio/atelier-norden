@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* ===== Design tokens (paleta: carbón, blanco cálido, gris piedra, arena) ===== */
+@theme {
+  --color-charcoal: #1a1a1a;
+  --color-charcoal-soft: #262626;
+  --color-warm-white: #fafaf6;
+  --color-stone-soft: #f2f0ec;
+  --color-stone: #d4d4d4;
+  --color-sand: #e7d8c7;
+  --color-sand-dark: #b8a48a;
+  --color-sand-deep: #a38c6b;
+
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ===== Base ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-warm-white);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+  font-feature-settings: "cv01", "cv02", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Skip link para accesibilidad */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: var(--color-charcoal);
+  color: #fff;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  z-index: 10000;
+  text-decoration: none;
+}
+
+/* ===== Animaciones (respetan prefers-reduced-motion) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.reveal.entered {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reveal escalonado para listas/grids (hijos del contenedor .stagger) */
+.stagger > .reveal {
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
+  }
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--color-charcoal);
+  outline-offset: 2px;
+}
+
+/* Utilidades de tipografía editorial */
+.text-display {
+  font-family: var(--font-display);
+}
+
+.leading-editorial {
+  line-height: 1.5;
+}
+
+/* Animación de pulso suave para esqueletos de carga */
+.pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-slow {
+    animation: none;
+    opacity: 0.5;
+  }
+}
