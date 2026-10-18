@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/scroll-reveal";
 import { cn } from "@/lib/utils";
@@ -28,15 +27,15 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         href={`/proyectos/${project.slug}`}
         className="block group relative overflow-hidden rounded-lg border border-stone-soft bg-stone-soft shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
       >
-        <div className="relative aspect-[4/3] overflow-hidden group">
-          <Image
-            src={project.cover}
-            alt={project.coverAlt}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-            priority={false}
-          />
+        <div
+          className="relative aspect-[4/3] overflow-hidden group"
+          style={{
+            backgroundImage: `url(${project.cover})`,
+            backgroundSize: "cover",
+            backgroundPosition: project.coverObjectPosition ?? "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
           <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-charcoal/30 transition-colors duration-500" />
           <div className="absolute top-6 left-6 z-20">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/30 bg-charcoal/60 text-[10px] font-medium text-white/90 backdrop-blur uppercase tracking-wider">

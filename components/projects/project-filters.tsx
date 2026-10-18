@@ -55,6 +55,7 @@ export function ProjectFilters({ onChange, current = null }: ProjectFiltersProps
           id="project-filters-menu"
           className="absolute z-20 mt-1 w-[200px] rounded-lg border border-stone-soft bg-white shadow-lg py-2"
           role="menu"
+          style={{ animation: "none" }}
         >
           <button
             onClick={() => handleSelect(null)}
