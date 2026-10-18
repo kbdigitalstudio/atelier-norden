@@ -5,8 +5,8 @@ export const SITE = {
     "Estudio de arquitectura y diseño de interiores especializado en espacios residenciales, comerciales y de hospitalidad que priorizan la materialidad, la luz y la experiencia del usuario.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://atelier-norden.kbdigitalstudio.example",
   email: "hola@atelier-norden.example",
-  phone: "+34 600 000 000",
-  address: "Carrer del Rosselló 145, 08008 Barcelona, España",
+  phone: "+57 300 000 0000",
+  address: "Cra. 7 # 72-21, Chapinero, Bogotá, Colombia",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
   instagram: "https://www.instagram.com/atelier.norden.example",
   ogImage:
@@ -48,32 +48,32 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "casa-luna",
-    title: "Casa Luna",
+    title: "Casa Candela",
     category: "vivienda",
-    location: "Cadaqués, Girona",
+    location: "Bogotá, Chapinero",
     surface: "210 m²",
     concept:
-      "Una vivienda unifamiliar que dialoga con la luz del Mediterráneo. Volúmenes blancos, terrazas escalonadas y materialidad en piedra natural y madera de roble.",
+      "Una vivienda unifamiliar que dialoga con la luz del altiplano cundinamarqués. Volúmenes blancos, terrazas descubiertas y materialidad en hormigón, guadua y piedra de la región.",
     description:
-      "Proyecto de vivienda unifamiliar pensado como una secuencia de espacios que se abren al mar y se cierran al viento norte. La planta baja alberga las áreas de día en un solo espacio fluido, mientras que la planta superior concentra los dormitorios en torno a un patio interior de piedra. La materialidad limitada —hormigón visto, piedra natural y madera de roble— busca envejecer con gracia y crear una atmósfera serena y atemporal.",
-    materials: ["Hormigón visto", "Piedra natural", "Madera de roble", "Vidrio"],
+      "Proyecto de vivienda unifamiliar pensado como una secuencia de espacios que se abren a la vista de los cerros orientales y se protegen del viento. La planta baja alberga las áreas de día en un solo espacio fluido, mientras que la planta superior concentra los dormitorios en torno a un patio interior con guadua. La materialidad limitada —hormigón visto, piedra de región y guadua— busca envejecer con gracia y crear una atmósfera serena y atemporal.",
+    materials: ["Hormigón visto", "Piedra de región", "Guadua", "Vidrio"],
     cover:
       "https://images.unsplash.com/photo-1633354747567-e0682586f082?q=80&w=1600&auto=format&fit=crop",
-    coverAlt: "Vivienda unifamiliar con pérgola y terrazas escalonadas frente al mar",
+    coverAlt: "Vivienda unifamiliar con terrazas y guadua frente a los cerros orientales",
     images: [
       {
         url: "https://images.unsplash.com/photo-1633354747567-e0682586f082?q=80&w=1600&auto=format&fit=crop",
-        alt: "Fachada de Casa Luna con pérgola de madera y terrazas",
+        alt: "Fachada de Casa Candela con terrazas y guadua",
         credit: "Juan Verdaguer Aguerrebehere · Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1586023492125-719a280e022f?q=80&w=1600&auto=format&fit=crop",
-        alt: "Interior de Casa Luna con líneas geométricas y luz natural",
+        alt: "Interior de Casa Candela con líneas geométricas y luz natural",
         credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop",
-        alt: "Detalle interior de Casa Luna con madera y luz",
+        alt: "Detalle interior de Casa Candela con guadua y luz",
         credit: "Unsplash",
       },
     ],
@@ -81,27 +81,27 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "luz-de-marea",
-    title: "Luz de Marea",
+    title: "Café Ámbar",
     category: "comercial",
-    location: "Barcelona, Eixample",
+    location: "Medellín, El Poblado",
     surface: "180 m²",
     concept:
-      "Espacio comercial de hostelería donde el hormigón y la madera crean una atmósfera sobria, fresca y atemporal.",
+      "Espacio comercial de hostelería donde el hormigón y la madera crean una atmósfera sobria, fresca y atemporal, inspirada en la arquitectura paisa.",
     description:
-      "Reforma integral de un local comercial en planta baja del Eixample barcelonés. La propuesta parte de preservar la estructura original de hormigón y superponer una intervención ligera de madera de nogal y latón que define el mostrador y la iluminación. Los suelos de hormigón pulido y las mesas de madera crean un contraste cálido y sobrio, mientras que la vegetación en macetas de terracota suaviza el espacio.",
-    materials: ["Hormigón pulido", "Madera de nogal", "Acero", "Latón"],
+      "Reforma integral de un local comercial en planta baja de El Poblado. La propuesta parte de preservar la estructura original de hormigón y superponer una intervención ligera de madera de roble y latón que define el mostrador y la iluminación. Los suelos de hormigón pulido y las mesas de madera crean un contraste cálido y sobrio, mientras que la vegetación en macetas de barro suaviza el espacio.",
+    materials: ["Hormigón pulido", "Madera de roble", "Acero", "Latón"],
     cover:
       "https://images.unsplash.com/photo-1464730282481-19bd52679224?q=80&w=1600&auto=format&fit=crop",
     coverAlt: "Interior comercial con estructura de hormigón y madera",
     images: [
       {
         url: "https://images.unsplash.com/photo-1464730282481-19bd52679224?q=80&w=1600&auto=format&fit=crop",
-        alt: "Espacio comercial Luz de Marea con hormigón visto",
+        alt: "Espacio comercial Café Ámbar con hormigón visto",
         credit: "Dennis van den Worm · Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1611619668988-9dd258b42ed3?q=80&w=1600&auto=format&fit=crop",
-        alt: "Detalle de muro de hormigón en Luz de Marea",
+        alt: "Detalle de muro de hormigón en Café Ámbar",
         credit: "Unsplash",
       },
       {
@@ -114,32 +114,32 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "patio-atomo",
-    title: "Patio Átomo",
+    title: "Patio Colonial",
     category: "interiorismo",
-    location: "Madrid, Salamanca",
+    location: "Cartagena, Getsemaní",
     surface: "95 m²",
     concept:
-      "Interior de vivienda centrado en el patio central como corazón de la casa. Luz cenital, texturas de yeso y madera de roble.",
+      "Interior de vivienda centrado en el patio central como corazón de la casa. Luz cenital, texturas de yeso y madera de mango.",
     description:
-      "Reforma de interior de una vivienda en el barrio de Salamanca donde el patio central se convierte en el eje distributivo y emocional de la casa. Se abren nuevos huecos hacia el interior para que la luz cenital llegue a todas las estancias. Las paredes de yeso blanco, los suelos de roble y los detalles de hierro y terracota crean una atmósfera cálida y tranquila.",
-    materials: ["Yeso blanco", "Madera de roble", "Hierro", "Terracota"],
+      "Reforma de interior de una vivienda en Getsemaní donde el patio central se convierte en el eje distributivo y emocional de la casa. Se abren nuevos huecos hacia el interior para que la luz cenital llegue a todas las estancias. Las paredes de yeso blanco, los suelos de madera de mango y los detalles de hierro y barro crean una atmósfera cálida y tranquila.",
+    materials: ["Yeso blanco", "Madera de mango", "Hierro", "Barro"],
     cover:
       "https://images.unsplash.com/photo-1768578927019-8be9eb339fb5?q=80&w=1600&auto=format&fit=crop",
     coverAlt: "Patio central con paredes de madera y escalera industrial",
     images: [
       {
         url: "https://images.unsplash.com/photo-1768578927019-8be9eb339fb5?q=80&w=1600&auto=format&fit=crop",
-        alt: "Patio central de Patio Átomo con escalera y madera",
+        alt: "Patio central de Patio Colonial con escalera y madera",
         credit: "Caroline Badran · Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop",
-        alt: "Detalle de interior de Patio Átomo",
+        alt: "Detalle de interior de Patio Colonial",
         credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1600&auto=format&fit=crop",
-        alt: "Líneas geométricas y sombras en interior de Patio Átomo",
+        alt: "Líneas geométricas y sombras en interior de Patio Colonial",
         credit: "Unsplash",
       },
     ],
@@ -147,32 +147,32 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "marea-baja",
-    title: "Marea Baja",
+    title: "Casa Colina",
     category: "remodelacion",
-    location: "Valencia, Ruzafa",
+    location: "Cali, San Antonio",
     surface: "140 m²",
     concept:
       "Remodelación integral de una vivienda de los años 70. Recuperación de piezas originales y nuevas aperturas hacia el interior.",
     description:
-      "Remodelación de una vivienda de los años 70 en Ruzafa que respeta y recupera el alma del edificio original. Se restauran los suelos hidráulicos y se recuperan las piezas de madera originales, mientras que se abren nuevas aperturas hacia el patio interior para iluminar el distribuidor. El acero corten y la cal se introducen como materiales contemporáneos que dialogan con lo existente.",
+      "Remodelación de una vivienda de los años 70 en San Antonio que respeta y recupera el alma del edificio original. Se restauran los suelos hidráulicos y se recuperan las piezas de madera originales, mientras que se abren nuevas aperturas hacia el patio interior para iluminar el distribuidor. El acero corten y la cal se introducen como materiales contemporáneos que dialogan con lo existente.",
     materials: ["Hidráulica restaurada", "Madera recuperada", "Cal", "Acero corten"],
     cover:
       "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=1600&auto=format&fit=crop",
-    coverAlt: "Escalera de caracol con luz cenital en Marea Baja",
+    coverAlt: "Escalera de caracol con luz cenital en Casa Colina",
     images: [
       {
         url: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=1600&auto=format&fit=crop",
-        alt: "Escalera de caracol y luz cenital en Marea Baja",
+        alt: "Escalera de caracol y luz cenital en Casa Colina",
         credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1600&auto=format&fit=crop",
-        alt: "Detalle de arquitectura de Marea Baja",
+        alt: "Detalle de arquitectura de Casa Colina",
         credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop",
-        alt: "Estudio de concreto y sombras en Marea Baja",
+        alt: "Estudio de concreto y sombras en Casa Colina",
         credit: "Unsplash",
       },
     ],
@@ -256,9 +256,9 @@ export const PROJECT_TYPE_OPTIONS = [
 ] as const;
 
 export const BUDGET_OPTIONS = [
-  { value: "menos-50k", label: "Menos de 50.000 €" },
-  { value: "50k-150k", label: "50.000 € – 150.000 €" },
-  { value: "150k-300k", label: "150.000 € – 300.000 €" },
-  { value: "mas-300k", label: "Más de 300.000 €" },
+  { value: "menos-50m", label: "Menos de 50.000.000 COP" },
+  { value: "50m-150m", label: "50.000.000 – 150.000.000 COP" },
+  { value: "150m-300m", label: "150.000.000 – 300.000.000 COP" },
+  { value: "mas-300m", label: "Más de 300.000.000 COP" },
   { value: "sin-definir", label: "Aún sin definir" },
 ] as const;
