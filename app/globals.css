@@ -61,33 +61,40 @@ body {
 }
 
 /* ===== Animaciones (respetan prefers-reduced-motion) ===== */
+/* El contenido es visible por defecto; la animación es una mejora progresiva. */
 .reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  will-change: opacity, transform;
+  opacity: 1;
+  transform: none;
+  will-change: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  .reveal[data-entering="true"] {
+    animation: reveal-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
 
-.reveal[data-entered="true"] {
-  opacity: 1;
-  transform: none;
+@keyframes reveal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Reveal escalonado para listas/grids (hijos del contenedor .stagger) */
-.stagger > .reveal {
-  transition-delay: var(--reveal-delay, 0s);
+.stagger > .reveal[data-entering="true"] {
+  animation-delay: var(--reveal-delay, 0s);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
     transform: none;
+    animation: none !important;
     transition: none !important;
   }
 }

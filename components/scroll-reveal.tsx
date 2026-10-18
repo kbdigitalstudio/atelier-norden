@@ -10,11 +10,18 @@ export interface RevealProps {
 }
 
 /**
- * Componente que revela su contenido al entrar en el viewport.
- * Respeta prefers-reduced-motion (no anima si el usuario lo ha desactivado).
+ * Componente que revela su contenido al hacer scroll.
+ * El contenido es visible por defecto (sin depender de JavaScript).
+ * Cuando JavaScript está disponible, aplica una animación de entrada sutil
+ * al entrar al viewport. Respeta prefers-reduced-motion.
  */
-export function Reveal({ children, className, delay = 0, once = true }: RevealProps) {
-  const [inView, setInView] = useState(false);
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  once = true,
+}: RevealProps) {
+  const [isEntering, setIsEntering] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
 
   const ref = useCallback((node: HTMLElement | null) => {
@@ -23,8 +30,7 @@ export function Reveal({ children, className, delay = 0, once = true }: RevealPr
 
     // Con reduced motion: mostrar inmediatamente, sin animar
     if (prefersReduced.matches) {
-      setInView(true);
-      if (once) setHasEntered(true);
+      setHasEntered(true);
       return;
     }
 
@@ -32,11 +38,11 @@ export function Reveal({ children, className, delay = 0, once = true }: RevealPr
       (entries) => {
         const entry = entries[0];
         if (entry?.isIntersecting) {
-          setInView(true);
+          setIsEntering(true);
           if (once) setHasEntered(true);
           observer.disconnect();
         } else if (!once) {
-          setInView(false);
+          setIsEntering(false);
         }
       },
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
@@ -45,15 +51,11 @@ export function Reveal({ children, className, delay = 0, once = true }: RevealPr
     return () => observer.disconnect();
   }, [once]);
 
-  const style = {
-    transitionDelay: delay > 0 ? `${delay}s` : undefined,
-  };
-
   return (
     <div
       ref={ref}
-      style={style}
-      data-entered={inView || hasEntered ? "true" : undefined}
+      data-entering={isEntering || hasEntered ? "true" : undefined}
+      style={{ transitionDelay: delay > 0 ? `${delay}s` : undefined }}
       className={`reveal ${className ?? ""}`}
     >
       {children}

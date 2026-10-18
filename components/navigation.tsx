@@ -120,7 +120,7 @@ export function Navigation() {
             </nav>
             <div className="mt-8 border-t border-stone-soft pt-6 space-y-3">
               <a
-                href={`https://wa.me/${process.env.WHATSAPP_NUMBER}`}
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block px-4 py-3 text-base font-medium text-charcoal hover:bg-stone-soft rounded-md transition-colors"
