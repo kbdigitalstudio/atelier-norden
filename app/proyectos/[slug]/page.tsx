@@ -8,6 +8,12 @@ import { JsonLd } from "@/components/json-ld";
 import { PROJECTS, SITE } from "@/lib/data";
 import { breadcrumbJsonLd, projectJsonLd } from "@/lib/structured-data";
 
+export function generateStaticParams() {
+  return PROJECTS.map((project) => ({
+    slug: project.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const project = PROJECTS.find((p) => p.slug === params.slug);
   if (!project) return { title: "Proyecto no encontrado" };
