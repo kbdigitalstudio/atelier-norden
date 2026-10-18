@@ -256,36 +256,40 @@ export function ContactForm({ action }: ContactFormProps) {
 
 export function ContactInfo() {
   return (
-    <dl className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-      <div className="reveal flex items-start gap-4">
+    <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="reveal flex flex-col items-start gap-4 min-w-0" style={{ transitionDelay: "0s" }}>
         <div className="flex-shrink-0 size-9 rounded-full border border-stone-soft flex items-center justify-center text-charcoal">
           <Mail size={20} strokeWidth={1.5} aria-hidden="true" />
         </div>
-        <div>
+        <div className="min-w-0">
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Correo</dt>
-          <dd className="text-sm text-charcoal">
+          <dd className="text-sm text-charcoal break-words overflow-wrap-anywhere">
             <a href="mailto:hola@atelier-norden.example" className="text-sand-dark hover:underline transition-colors">
               KBdigitalstudio69@gmail.com
             </a>
           </dd>
         </div>
       </div>
-      <div className="reveal flex items-start gap-4" style={{ transitionDelay: "0.1s" }}>
+      <div className="reveal flex flex-col items-start gap-4 min-w-0" style={{ transitionDelay: "0.1s" }}>
         <div className="flex-shrink-0 size-9 rounded-full border border-stone-soft flex items-center justify-center text-charcoal">
           <Phone size={20} strokeWidth={1.5} aria-hidden="true" />
         </div>
-        <div>
+        <div className="min-w-0">
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Teléfono</dt>
-          <dd className="text-sm text-charcoal">+57 323 709 4970</dd>
+          <dd className="text-sm text-charcoal break-words overflow-wrap-anywhere">
+            +57 323 709 4970
+          </dd>
         </div>
       </div>
-      <div className="reveal flex items-start gap-4" style={{ transitionDelay: "0.2s" }}>
+      <div className="reveal flex flex-col items-start gap-4 min-w-0" style={{ transitionDelay: "0.2s" }}>
         <div className="flex-shrink-0 size-9 rounded-full border border-stone-soft flex items-center justify-center text-charcoal">
           <MapPin size={20} strokeWidth={1.5} aria-hidden="true" />
         </div>
-        <div>
+        <div className="min-w-0">
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Estudio</dt>
-          <dd className="text-sm text-charcoal">Carrera 11 Este 10-28 Sur, Villa Melida, Villavicencio</dd>
+          <dd className="text-sm text-charcoal break-words overflow-wrap-anywhere">
+            Carrera 11 Este 10-28 Sur, Villa Melida, Villavicencio
+          </dd>
         </div>
       </div>
     </dl>

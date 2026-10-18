@@ -33,12 +33,6 @@ export default function ProyectosPage() {
           </Reveal>
         </div>
 
-        {/* Decoración sutil: icono de filtro en la esquina */}
-        <div className="absolute right-0 top-24 w-32 h-32 opacity-10 pointer-events-none">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 16a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" />
-          </svg>
-        </div>
       </section>
 
       {/* Galería de proyectos */}
