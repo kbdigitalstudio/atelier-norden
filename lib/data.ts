@@ -13,13 +13,14 @@ export const SITE = {
     "https://images.unsplash.com/photo-1633354747567-e0682586f082?q=80&w=1200&auto=format&fit=crop",
 } as const;
 
-export type ProjectCategory = "vivienda" | "comercial" | "interiorismo" | "remodelacion";
+export type ProjectCategory = "vivienda" | "comercial" | "institucional" | "interiorismo" | "remodelacion";
 
 export const PROJECT_CATEGORIES: Array<{ value: ProjectCategory; label: string }> = [
   { value: "vivienda", label: "Vivienda" },
   { value: "comercial", label: "Comercial" },
   { value: "interiorismo", label: "Interiorismo" },
   { value: "remodelacion", label: "Remodelación" },
+  { value: "institucional", label: "Institucional" },
 ];
 
 export interface ProjectImage {
@@ -27,6 +28,13 @@ export interface ProjectImage {
   alt: string;
   credit?: string;
   objectPosition?: string;
+}
+
+export interface ProjectBudget {
+  min?: number;
+  max?: number;
+  type: "construccion" | "remodelacion" | "diseno";
+  note?: string;
 }
 
 export interface Project {
@@ -42,6 +50,7 @@ export interface Project {
   cover: string;
   coverAlt: string;
   coverObjectPosition?: string;
+  budget?: ProjectBudget;
   conceptual: true;
 }
 
@@ -64,7 +73,7 @@ export const PROJECTS: Project[] = [
       {
         url: "https://images.unsplash.com/photo-1633354747567-e0682586f082?q=80&w=1600&auto=format&fit=crop",
         alt: "Fachada de Casa Candela con terrazas y guadua",
-        credit: "Juan Verdaguer Aguerrebehere · Unsplash",
+        credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1586023492125-719a280e022f?q=80&w=1600&auto=format&fit=crop",
@@ -77,6 +86,12 @@ export const PROJECTS: Project[] = [
         credit: "Unsplash",
       },
     ],
+    budget: {
+      min: 180000000,
+      max: 320000000,
+      type: "construccion",
+      note: "Presupuesto estimado de construcción para vivienda unifamiliar de 210 m² en Bogotá.",
+    },
     conceptual: true,
   },
   {
@@ -97,7 +112,7 @@ export const PROJECTS: Project[] = [
       {
         url: "https://images.unsplash.com/photo-1464730282481-19bd52679224?q=80&w=1600&auto=format&fit=crop",
         alt: "Espacio comercial Café Ámbar con hormigón visto",
-        credit: "Dennis van den Worm · Unsplash",
+        credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1611619668988-9dd258b42ed3?q=80&w=1600&auto=format&fit=crop",
@@ -110,6 +125,12 @@ export const PROJECTS: Project[] = [
         credit: "Unsplash",
       },
     ],
+    budget: {
+      min: 95000000,
+      max: 140000000,
+      type: "remodelacion",
+      note: "Presupuesto estimado de remodelación para local comercial de 180 m² en Medellín.",
+    },
     conceptual: true,
   },
   {
@@ -130,7 +151,7 @@ export const PROJECTS: Project[] = [
       {
         url: "https://images.unsplash.com/photo-1768578927019-8be9eb339fb5?q=80&w=1600&auto=format&fit=crop",
         alt: "Patio central de Patio Colonial con escalera y madera",
-        credit: "Caroline Badran · Unsplash",
+        credit: "Unsplash",
       },
       {
         url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop",
@@ -143,6 +164,12 @@ export const PROJECTS: Project[] = [
         credit: "Unsplash",
       },
     ],
+    budget: {
+      min: 65000000,
+      max: 95000000,
+      type: "remodelacion",
+      note: "Presupuesto estimado de remodelación de interiores para vivienda de 95 m² en Cartagena.",
+    },
     conceptual: true,
   },
   {
@@ -176,6 +203,12 @@ export const PROJECTS: Project[] = [
         credit: "Unsplash",
       },
     ],
+    budget: {
+      min: 110000000,
+      max: 190000000,
+      type: "remodelacion",
+      note: "Presupuesto estimado de remodelación para vivienda de 140 m² en Cali.",
+    },
     conceptual: true,
   },
 ];
@@ -256,9 +289,21 @@ export const PROJECT_TYPE_OPTIONS = [
 ] as const;
 
 export const BUDGET_OPTIONS = [
-  { value: "menos-50m", label: "Menos de 50.000.000 COP" },
-  { value: "50m-150m", label: "50.000.000 – 150.000.000 COP" },
-  { value: "150m-300m", label: "150.000.000 – 300.000.000 COP" },
-  { value: "mas-300m", label: "Más de 300.000.000 COP" },
+  { value: "menos-50m", label: "Menos de $ 50.000.000 COP" },
+  { value: "50m-150m", label: "$ 50.000.000 – 150.000.000 COP" },
+  { value: "150m-300m", label: "$ 150.000.000 – 300.000.000 COP" },
+  { value: "mas-300m", label: "Más de $ 300.000.000 COP" },
   { value: "sin-definir", label: "Aún sin definir" },
 ] as const;
+
+/**
+ * Formatea un monto en pesos colombianos usando Intl.NumberFormat.
+ * Devuelve una cadena como "$ 180.000.000 COP".
+ */
+export function formatBudgetCOP(value: number): string {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(value);
+}

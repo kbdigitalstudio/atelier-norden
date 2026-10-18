@@ -5,7 +5,7 @@ import { Reveal } from "@/components/scroll-reveal";
 import { SectionTitle } from "@/components/section-title";
 import { GalleryImage } from "@/components/image-gallery";
 import { JsonLd } from "@/components/json-ld";
-import { PROJECTS, SITE } from "@/lib/data";
+import { PROJECTS, SITE, formatBudgetCOP } from "@/lib/data";
 import { breadcrumbJsonLd, projectJsonLd } from "@/lib/structured-data";
 
 export function generateStaticParams() {
@@ -162,6 +162,25 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       <dt className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">Categoría</dt>
                       <dd className="text-charcoal">{categoryLabel}</dd>
                     </div>
+                    {project.budget && (
+                      <div>
+                        <dt className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">
+                          Presupuesto estimado
+                        </dt>
+                        <dd className="text-charcoal">
+                          {project.budget.min !== undefined && project.budget.max !== undefined ? (
+                            <>
+                              {formatBudgetCOP(project.budget.min)} – {formatBudgetCOP(project.budget.max)}
+                            </>
+                          ) : (
+                            <span className="text-stone-500">Por definir</span>
+                          )}
+                        </dd>
+                        {project.budget.note && (
+                          <dd className="col-span-2 text-xs text-stone-500 mt-1">{project.budget.note}</dd>
+                        )}
+                      </div>
+                    )}
                     <div>
                       <dt className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">Estado</dt>
                       <dd className="text-charcoal">Proyecto conceptual</dd>
