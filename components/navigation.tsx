@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -19,18 +19,31 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLButtonElement>(null);
 
-  const closeMenu = useCallback(() => setOpen(false), []);
+  const closeMenu = useCallback(() => {
+    setOpen(false);
+    // Devuelve el foco al disparador al cerrar para navegar por teclado sin perder la referencia
+    menuRef.current?.focus();
+  }, []);
 
-  // Clic fuera para cerrar el menú móvil
+  // Clic fuera y tecla Escape para cerrar el menú móvil
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (open && menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (open && e.key === "Escape") {
+        closeMenu();
+      }
+    };
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [open]);
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [open, closeMenu]);
 
   return (
     <>
@@ -65,13 +78,13 @@ export function Navigation() {
               onClick={() => setOpen((prev) => !prev)}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              aria-label="Abrir menú"
-              className="inline-flex items-center justify-center p-2 text-charcoal hover:text-sand-dark focus-visible:outline-none transition-colors"
+              aria-label={open ? "Cerrar menú" : "Abrir menú"}
+              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-charcoal hover:text-sand-dark focus-visible:outline-none transition-colors"
             >
               {open ? (
                 <X size={22} strokeWidth={2} />
               ) : (
-                <Menu size={22} strokeWidth={2} />
+                "Menú"
               )}
             </button>
           </div>

@@ -31,7 +31,7 @@ export function Hero() {
         <Reveal delay={0.05}>
           <div className="max-w-2xl lg:max-w-3xl">
             <span className="inline-block px-3 py-1.5 rounded-full border border-sand/30 bg-charcoal/40 text-[10px] font-bold text-sand/70 uppercase tracking-widest backdrop-blur-sm mb-6 block">
-              Estudio de arquitectura · Barcelona
+              Estudio de arquitectura · Colombiana
             </span>
 
             <h1
