@@ -174,10 +174,10 @@ export function ContactForm({ action }: ContactFormProps) {
           )}
         >
           <option value="">Selecciona un rango</option>
-          <option value="menos-50k">Menos de 50.000 €</option>
-          <option value="50k-150k">50.000 € – 150.000 €</option>
-          <option value="150k-300k">150.000 € – 300.000 €</option>
-          <option value="mas-300k">Más de 300.000 €</option>
+          <option value="menos-50k">Menos de $ 50.000.000</option>
+          <option value="50k-150k">$ 50.000.000  – $ 150.000.000</option>
+          <option value="150k-300k">$ 150.000.000 – $ 300.000.000</option>
+          <option value="mas-300k">Más de $ 300.000.000</option>
           <option value="sin-definir">Aún sin definir</option>
         </select>
         {errors.budget && (
@@ -265,7 +265,7 @@ export function ContactInfo() {
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Correo</dt>
           <dd className="text-sm text-charcoal">
             <a href="mailto:hola@atelier-norden.example" className="text-sand-dark hover:underline transition-colors">
-              hola@atelier-norden.example
+              KBdigitalstudio69@gmail.com
             </a>
           </dd>
         </div>
@@ -276,7 +276,7 @@ export function ContactInfo() {
         </div>
         <div>
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Teléfono</dt>
-          <dd className="text-sm text-charcoal">+34 600 000 000</dd>
+          <dd className="text-sm text-charcoal">+57 323 709 4970</dd>
         </div>
       </div>
       <div className="reveal flex items-start gap-4" style={{ transitionDelay: "0.2s" }}>
@@ -285,7 +285,7 @@ export function ContactInfo() {
         </div>
         <div>
           <dt className="text-xs font-bold text-stone-500 uppercase tracking-widest">Estudio</dt>
-          <dd className="text-sm text-charcoal">Carrer del Rosselló 145, 08008 Barcelona, España</dd>
+          <dd className="text-sm text-charcoal">Carrera 11 Este 10-28 Sur, Villa Melida, Villavicencio</dd>
         </div>
       </div>
     </dl>
