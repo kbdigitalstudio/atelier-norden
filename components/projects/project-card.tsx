@@ -1,10 +1,8 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { Reveal } from "@/components/scroll-reveal";
+import { ArrowUpRight } from "lucide-react";
+import { categoryLabel, type Project } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { formatBudgetCOP } from "@/lib/data";
-import type { Project } from "@/lib/data";
 
 interface ProjectCardProps {
   project: Project;
@@ -12,60 +10,42 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, className }: ProjectCardProps) {
-  const categoryLabel =
-    project.category === "vivienda"
-      ? "Vivienda"
-      : project.category === "comercial"
-        ? "Comercial"
-        : project.category === "interiorismo"
-          ? "Interiorismo"
-          : "Remodelación";
-
   return (
-    <Reveal className={cn(className)}>
+    <article className={cn("project-tile reveal", className)}>
       <Link
         href={`/proyectos/${project.slug}`}
-        className="block group relative overflow-hidden rounded-lg border border-stone-soft bg-stone-soft shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+        className="project-tile__link"
+        aria-label={`${project.title} — ${categoryLabel(project.category)} en ${project.location}`}
       >
-        <div
-          className="relative aspect-[4/3] overflow-hidden group"
-          style={{
-            backgroundImage: `url(${project.cover})`,
-            backgroundSize: "cover",
-            backgroundPosition: project.coverObjectPosition ?? "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-charcoal/30 transition-colors duration-500" />
-          <div className="absolute top-6 left-6 z-20">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/30 bg-charcoal/60 text-[10px] font-medium text-white/90 backdrop-blur uppercase tracking-wider">
-              {categoryLabel}
-            </span>
+        <div className="project-tile__topline">
+          <span>{categoryLabel(project.category)}</span>
+          <span>{project.location}</span>
+        </div>
+
+        <div className="media project-tile__image">
+          <Image
+            src={project.cover}
+            alt={project.coverAlt}
+            fill
+            sizes="(min-width: 1280px) 48vw, (min-width: 760px) 50vw, 100vw"
+            quality={82}
+            style={{ objectPosition: project.coverObjectPosition ?? "center" }}
+          />
+        </div>
+
+        <div className="project-tile__body">
+          <div className="min-w-0">
+            <h3 className="headline-sm project-tile__title">{project.title}</h3>
+            <p className="project-tile__meta">
+              {project.surface} <span className="opacity-40">·</span>{" "}
+              {project.conceptual ? "Proyecto conceptual" : "Proyecto"}
+            </p>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-            <span className="inline-block mb-1.5 px-3 py-1 rounded-full border border-white/40 bg-charcoal/60 text-[10px] font-bold text-white/90 backdrop-blur-sm uppercase tracking-widest">
-              {categoryLabel}
-            </span>
-            <h3
-              className="text-display text-lg md:text-xl font-normal text-white leading-tight mb-1"
-            >
-              {project.title}
-            </h3>
-            <div className="flex items-center gap-3 text-sm text-white/90">
-              <span className="flex items-center gap-1">
-                <span className="text-xs opacity-80">{project.location}</span>
-              </span>
-              <span className="w-px h-3 bg-white/40"></span>
-              <span className="text-xs opacity-80">{project.surface}</span>
-            </div>
-            {project.budget && project.budget.min !== undefined && project.budget.max !== undefined && (
-              <p className="mt-2 text-sm font-medium text-white text-sand/90">
-                {formatBudgetCOP(project.budget.min)} – {formatBudgetCOP(project.budget.max)}
-              </p>
-            )}
-          </div>
+          <span className="project-tile__arrow" aria-hidden="true">
+            <ArrowUpRight size={20} strokeWidth={1.3} />
+          </span>
         </div>
       </Link>
-    </Reveal>
+    </article>
   );
 }

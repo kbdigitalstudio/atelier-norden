@@ -1,5 +1,9 @@
 import { SITE } from "@/lib/data";
 
+function absolute(path: string): string {
+  return new URL(path, SITE.url).toString();
+}
+
 function escapeForJsonLd(value: string): string {
   return value.replace(/<\/script>/g, "<\\/script>");
 }
@@ -7,22 +11,28 @@ function escapeForJsonLd(value: string): string {
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "ProfessionalService",
+    "@id": `${absolute("/")}#organization`,
     name: SITE.name,
     description: SITE.description,
-    url: SITE.url,
+    url: absolute("/"),
     email: SITE.email,
+    telephone: SITE.phoneHref,
+    image: absolute(SITE.ogImage),
+    logo: absolute(SITE.ogImage),
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Carrer del Rosselló 145",
-      addressLocality: "Barcelona",
-      addressRegion: "Catalunya",
-      postalCode: "08008",
-      addressCountry: "ES",
+      streetAddress: "Carrera 11 Este 10-28 Sur, Villa Melida",
+      addressLocality: SITE.addressLocality,
+      addressRegion: SITE.addressRegion,
+      addressCountry: SITE.addressCountry,
     },
+    areaServed: {
+      "@type": "Country",
+      name: "Colombia",
+    },
+    knowsLanguage: ["es-CO"],
     sameAs: SITE.instagram ? [SITE.instagram] : undefined,
-    logo: SITE.ogImage,
-    image: SITE.ogImage,
   };
 }
 
@@ -31,13 +41,11 @@ export function websiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE.name,
-    url: SITE.url,
+    url: absolute("/"),
     description: SITE.description,
-    inLanguage: "es-ES",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE.url}/proyectos`,
-      "query-input": "required",
+    inLanguage: "es-CO",
+    publisher: {
+      "@id": `${absolute("/")}#organization`,
     },
   };
 }
@@ -50,7 +58,7 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
       "@type": "ListItem",
       position: index + 1,
       name: escapeForJsonLd(item.name),
-      item: item.url,
+      item: absolute(item.url),
     })),
   };
 }
@@ -66,11 +74,10 @@ export function projectJsonLd(project: {
     "@type": "CreativeWork",
     name: escapeForJsonLd(project.title),
     description: escapeForJsonLd(project.concept),
-    url: `${SITE.url}/proyectos/${project.slug}`,
-    image: project.cover,
+    url: absolute(`/proyectos/${project.slug}`),
+    image: absolute(project.cover),
     creator: {
-      "@type": "Organization",
-      name: SITE.name,
+      "@id": `${absolute("/")}#organization`,
     },
     additionalType: "https://schema.org/ArchitecturalProject",
     comment:

@@ -1,40 +1,33 @@
-import { Reveal } from "@/components/scroll-reveal";
+import Image from "next/image";
+import type { ProjectImage } from "@/lib/data";
 
 interface GalleryImageProps {
-  src: string;
-  alt: string;
-  credit?: string;
-  width?: number;
-  height?: number;
-  objectPosition?: string;
+  image: ProjectImage;
+  index: number;
+  sizes?: string;
 }
 
 export function GalleryImage({
-  src,
-  alt,
-  credit,
-  width,
-  height,
-  objectPosition,
+  image,
+  index,
+  sizes = "(min-width: 800px) 55vw, 100vw",
 }: GalleryImageProps) {
   return (
-    <Reveal className="relative overflow-hidden rounded-lg border border-stone-soft shadow-sm bg-stone-soft group">
-      <div
-        className="relative aspect-[4/3] overflow-hidden"
-        style={{
-          backgroundImage: `url(${src})`,
-          backgroundSize: "cover",
-          backgroundPosition: objectPosition ?? "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-charcoal/30 group-hover:bg-charcoal/10 transition-colors duration-500" />
-        {credit && (
-          <div className="absolute bottom-2 left-2 z-10 px-2 py-1 text-[10px] uppercase tracking-wider text-white/90 bg-black/50 backdrop-blur-sm rounded">
-            {credit}
-          </div>
-        )}
+    <figure className="project-gallery__figure reveal">
+      <div className="media project-gallery__media">
+        <Image
+          src={image.url}
+          alt={image.alt}
+          fill
+          sizes={sizes}
+          quality={82}
+          style={{ objectPosition: image.objectPosition ?? "center" }}
+        />
       </div>
-    </Reveal>
+      <figcaption className="project-gallery__caption">
+        <span>Vista {String(index + 1).padStart(2, "0")}</span>
+        {image.credit && <span>Fotografía · {image.credit}</span>}
+      </figcaption>
+    </figure>
   );
 }

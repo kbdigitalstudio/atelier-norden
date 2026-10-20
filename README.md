@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATELIER NÓRDEN
 
-## Getting Started
+Sitio editorial de arquitectura y diseño de interiores. Proyecto de portafolio
+desarrollado para **KB Digital Studio** con Next.js 16, React 19 y Tailwind CSS 4.
 
-First, run the development server:
+## Desarrollo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npx tsc --noEmit
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El sitio se sirve por defecto en `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dirección visual
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Sistema **“Del trazo al espacio”**: papel mineral, grafito, piedra, arena y un
+acento óxido. Tipografías Fraunces (display), Manrope (texto) e IBM Plex Mono
+(etiquetas técnicas). La retícula, las líneas de plano y los índices numéricos
+se usan como estructura, no como decoración.
 
-## Learn More
+Tokens principales en `app/globals.css`:
 
-To learn more about Next.js, take a look at the following resources:
+- `--color-paper` `#f3efe6`
+- `--color-graphite` `#171917`
+- `--color-line` `#d3cabb`
+- `--color-sand` `#c6b29a`
+- `--color-oxide` `#985038`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Rutas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` — portada, manifiesto, proyectos destacados, servicios y método.
+- `/proyectos` — índice filtrable por categoría.
+- `/proyectos/casa-luna`
+- `/proyectos/luz-de-marea`
+- `/proyectos/patio-atomo`
+- `/proyectos/marea-baja`
+- `/estudio`
+- `/servicios`
+- `/contacto`
+- `/privacidad`
 
-## Deploy on Vercel
+Los slugs de proyecto se conservan y cualquier cambio debe actualizar enlaces,
+sitemap, JSON-LD y el pie de página.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Intro de portada
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+La intro de 4 segundos se renderiza en servidor y se anima con CSS. El script
+inline de `app/layout.tsx` decide antes del primer pintado si debe mostrarse:
+
+- se muestra una vez por sesión (`sessionStorage`, clave `an-intro-seen`);
+- se omite con `prefers-reduced-motion: reduce`;
+- se puede saltar con el botón visible o con `Escape` (foco contenido);
+- el overlay se retira solo al terminar la animación, incluso sin hidratación;
+- el contenido de la portada sigue siendo visible si JavaScript falla.
+
+## Contenido y datos provisionales
+
+Este sitio es una **demostración conceptual**. No debe presentarse como una
+obra construida ni como un estudio con clientes reales.
+
+- Los cuatro proyectos, sus superficies, ubicaciones y presupuestos estimados
+  son ejercicios de portafolio.
+- Los nombres y roles del equipo forman parte del mismo ejercicio conceptual.
+- Los datos de contacto (`SITE` en `lib/data.ts`) provienen de la información
+  disponible en el proyecto. Conviene verificarlos antes de un uso comercial.
+- No se publica un enlace de Instagram porque no se ha verificado una cuenta
+  activa del estudio.
+- Las fotografías son de Unsplash y se acreditan en la interfaz. No representan
+  los proyectos descritos.
+- El formulario de contacto es una demostración: valida en cliente y servidor,
+  pero no almacena ni reenvía mensajes.
+
+Antes de publicar contenido definitivo, revisar `lib/data.ts`, el texto legal de
+`app/privacidad/page.tsx` y los datos estructurados de `lib/structured-data.ts`.
+
+## Imágenes
+
+Todas las imágenes viven en `public/images/` y se sirven con `next/image`. El
+hero y las portadas de proyecto usan 1600 px de ancho; las calidades permitidas
+se declaran en `next.config.ts` (`75`, `82`, `85`).

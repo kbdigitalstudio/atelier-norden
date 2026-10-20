@@ -1,7 +1,4 @@
-"use client";
-
 import { ProjectCard } from "./project-card";
-import { Reveal } from "@/components/scroll-reveal";
 import type { Project } from "@/lib/data";
 
 interface ProjectGridProps {
@@ -11,17 +8,20 @@ interface ProjectGridProps {
 export function ProjectGrid({ projects }: ProjectGridProps) {
   if (projects.length === 0) {
     return (
-      <Reveal className="text-center py-20">
-        <p className="text-stone-600 text-lg">No se encontraron proyectos con este filtro.</p>
-      </Reveal>
+      <div className="empty-state">
+        <p className="headline-md">Aún no hay proyectos en esta categoría.</p>
+        <p className="body-base mx-auto mt-3 max-w-md">
+          Prueba otra categoría o vuelve a ver la selección completa.
+        </p>
+      </div>
     );
   }
 
   return (
-    <Reveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 stagger">
+    <div className="project-index-grid">
       {projects.map((project) => (
         <ProjectCard key={project.slug} project={project} />
       ))}
-    </Reveal>
+    </div>
   );
 }

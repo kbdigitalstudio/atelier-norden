@@ -1,17 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-    ],
+    // Next 16 exige declarar las calidades permitidas. Las imágenes del sitio
+    // son locales y se sirven optimizadas desde /public/images.
+    qualities: [75, 82, 85],
   },
   turbopack: {
     rules: {

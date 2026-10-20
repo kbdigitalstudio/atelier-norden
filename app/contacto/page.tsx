@@ -1,16 +1,20 @@
-import { Metadata } from "next";
-import { Reveal } from "@/components/scroll-reveal";
-import { SectionTitle } from "@/components/section-title";
+import type { Metadata } from "next";
 import { ContactForm, ContactInfo } from "@/components/contact-form";
 import { SITE } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contacto",
-  description: "Contacta con ATELIER NÓRDEN. Envíanos un mensaje sobre tu proyecto de arquitectura.",
+  description:
+    "Escríbenos para hablar de tu proyecto de arquitectura, interiorismo o remodelación con ATELIER NÓRDEN.",
+  alternates: {
+    canonical: "/contacto",
+  },
   openGraph: {
     title: "Contacto · ATELIER NÓRDEN",
-    description: "Envíanos un mensaje y cuéntanos sobre tu proyecto.",
+    description:
+      "Cuéntanos qué tienes en mente. Definiremos el alcance y el punto de partida.",
     type: "website",
+    url: "/contacto",
   },
 };
 
@@ -18,56 +22,64 @@ const ACTION = "/api/contacto";
 
 export default function ContactoPage() {
   return (
-    <div className="flex flex-col">
-      <section className="relative py-24 md:py-32 overflow-hidden">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-            <div className="order-first lg:order-last">
-              <Reveal className="mb-10 md:mb-14">
-                <SectionTitle
-                  title="Contacto"
-                  subtitle="Escríbenos y cuéntanos sobre tu proyecto. Responderemos a la brevedad posible."
-                />
-              </Reveal>
-              <Reveal delay={0.2}>
-                <ContactForm action={ACTION} />
-              </Reveal>
+    <>
+      <section className="page-hero">
+        <div className="shell">
+          <div className="page-hero__grid">
+            <div>
+              <p className="eyebrow text-muted">05 / Contacto</p>
+              <h1 className="headline-xl page-hero__title mt-6">
+                Empecemos por una conversación.
+              </h1>
             </div>
-            <div className="order-last lg:order-first">
-              <Reveal delay={0.4}>
-                <ContactInfo />
-              </Reveal>
-              <Reveal delay={0.7} className="mt-12 lg:mt-0 rounded-lg border border-stone-soft bg-warm-white p-8">
-                <h3 className="text-display text-lg font-normal text-charcoal mb-4">Síguenos</h3>
-                <p className="text-sm text-stone-600 mb-6">
-                  Comparte nuestro trabajo y mantente al día de los nuevos proyectos.
-                </p>
-                <a
-                  href={SITE.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-charcoal hover:text-sand-dark transition-colors focus-visible:outline-none"
-                >
-                  Instagram
-                </a>
-              </Reveal>
+            <div className="page-hero__intro">
+              <p className="body-lg">
+                Cuéntanos qué tienes en mente: un terreno, una casa que necesita
+                otra mirada, un local por transformar. Definiremos juntos el
+                alcance y el siguiente paso.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 border-t border-stone-soft">
-        <div className="px-6 md:px-8 max-w-3xl mx-auto text-center">
-          <Reveal>
-            <p className="text-xs text-stone-400 tracking-widest uppercase mb-6">
-              Proyecto de portafolio · KB Digital Studio
-            </p>
-            <p className="text-sm text-stone-500">
-              Este formulario es una demostración. Los datos no se almacenan ni se envían a ningún servidor real.
-            </p>
-          </Reveal>
+      <section className="section">
+        <div className="shell">
+          <div className="grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+            <div>
+              <p className="eyebrow text-muted">Canales directos</p>
+              <div className="mt-6">
+                <ContactInfo />
+              </div>
+
+              <div className="mt-10 border-t border-line pt-5">
+                <p className="eyebrow text-muted">Nota</p>
+                <p className="body-base mt-3 text-sm">
+                  ATELIER NÓRDEN es un proyecto de portafolio de KB Digital
+                  Studio. Los datos de contacto y los proyectos son parte de una
+                  demostración conceptual.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="eyebrow text-muted">Formulario</p>
+              <h2 className="headline-md mt-4">Cuéntanos qué tienes en mente.</h2>
+              <p className="body-base mt-3 mb-8 max-w-xl">
+                Los campos marcados con asterisco son obligatorios. Si prefieres,
+                puedes escribirnos directamente por correo, teléfono o WhatsApp.
+              </p>
+              <ContactForm action={ACTION} />
+            </div>
+          </div>
         </div>
       </section>
-    </div>
+
+      <section className="section section--tight">
+        <div className="shell">
+          <p className="body-base max-w-3xl text-xs">{SITE.disclaimer}</p>
+        </div>
+      </section>
+    </>
   );
 }

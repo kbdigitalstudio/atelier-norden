@@ -1,13 +1,19 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import ProyectosPage from "./page-client";
 
 export const metadata: Metadata = {
-  title: "Proyectos · ATELIER NÓRDEN",
-  description: "Galería de proyectos de ATELIER NÓRDEN: arquitectura contemporánea en Colombia. Vivienda, comercial, interiorismo y remodelación.",
+  title: "Proyectos",
+  description:
+    "Selección de proyectos conceptuales de arquitectura, interiorismo y remodelación de ATELIER NÓRDEN en Colombia.",
+  alternates: {
+    canonical: "/proyectos",
+  },
   openGraph: {
     title: "Proyectos · ATELIER NÓRDEN",
-    description: "Galería de proyectos de arquitectura y diseño de interiores en Colombia.",
+    description:
+      "Cuatro ejercicios conceptuales de vivienda, hostelería, interiorismo y remodelación.",
     type: "website",
+    url: "/proyectos",
   },
 };
 

@@ -1,81 +1,48 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { SlidersHorizontal } from "lucide-react";
-import { PROJECT_CATEGORIES } from "@/lib/data";
-import { Reveal } from "@/components/scroll-reveal";
+import { PROJECT_CATEGORIES, type ProjectCategory } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface ProjectFiltersProps {
-  onChange: (value: string | null) => void;
-  current?: string | null;
+  value: ProjectCategory | null;
+  onChange: (value: ProjectCategory | null) => void;
+  counts: Record<ProjectCategory, number>;
+  total: number;
 }
 
-export function ProjectFilters({ onChange, current = null }: ProjectFiltersProps) {
-  const [open, setOpen] = useState(false);
-
-  const handleSelect = useCallback(
-    (value: string | null) => {
-      setOpen(false);
-      onChange(value);
-    },
-    [onChange],
-  );
-
-  const label =
-    current === null ? "Todas las categorías" : PROJECT_CATEGORIES.find((c) => c.value === current)?.label || current;
-
+export function ProjectFilters({ value, onChange, counts, total }: ProjectFiltersProps) {
   return (
-    <Reveal className="relative inline-block text-left">
+    <div
+      className="project-filter-list"
+      role="group"
+      aria-label="Filtrar proyectos por categoría"
+    >
       <button
-        onClick={() => setOpen((prev) => !prev)}
-        aria-expanded={open}
-        aria-controls="project-filters-menu"
-        className={cn(
-          "inline-flex items-center justify-between min-w-[200px] px-4 py-3 text-left text-sm font-medium text-charcoal border border-stone-soft rounded-lg bg-white hover:bg-stone-soft transition-colors focus-visible:outline-none",
-          open ? "bg-stone-soft" : "",
-        )}
+        type="button"
+        onClick={() => onChange(null)}
+        aria-pressed={value === null}
+        className={cn("project-filter", value === null && "is-active")}
       >
-        <SlidersHorizontal size={16} strokeWidth={1.5} className="mr-2" aria-hidden="true" />
-        <span>{label}</span>
-        <svg
-          className={`size-4 text-stone transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        Todas
+        <span className="project-filter__count" aria-hidden="true">
+          {total}
+        </span>
       </button>
 
-      {open && (
-        <div
-          id="project-filters-menu"
-          className="absolute z-20 mt-1 w-[200px] rounded-lg border border-stone-soft bg-white shadow-lg py-2"
-          role="menu"
-          style={{ animation: "none" }}
+      {PROJECT_CATEGORIES.map((category) => (
+        <button
+          key={category.value}
+          type="button"
+          onClick={() => onChange(category.value)}
+          aria-pressed={value === category.value}
+          className={cn("project-filter", value === category.value && "is-active")}
         >
-          <button
-            onClick={() => handleSelect(null)}
-            role="menuitem"
-            className={cn("block w-full text-left px-4 py-2 text-sm", current === null ? "text-charcoal font-semibold bg-stone-soft" : "text-stone-600 hover:bg-stone-soft")}
-          >
-            Todas las categorías
-          </button>
-          {PROJECT_CATEGORIES.map((category) => (
-            <button
-              key={category.value}
-              onClick={() => handleSelect(category.value)}
-              role="menuitem"
-              className={cn("block w-full text-left px-4 py-2 text-sm", current === category.value ? "text-charcoal font-semibold bg-stone-soft" : "text-stone-600 hover:bg-stone-soft")}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </Reveal>
+          {category.label}
+          <span className="project-filter__count" aria-hidden="true">
+            {counts[category.value]}
+          </span>
+        </button>
+      ))}
+    </div>
   );
 }

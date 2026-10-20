@@ -1,64 +1,154 @@
-import { Metadata } from "next";
-import { Building2, Sofa, RotateCcw, FileText } from "lucide-react";
-import { Reveal } from "@/components/scroll-reveal";
-import { SectionTitle } from "@/components/section-title";
-import { SERVICES } from "@/lib/data";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { SectionHead } from "@/components/section-title";
+import { SERVICES, SITE } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Servicios",
-  description: "Diseño arquitectónico, interiorismo, remodelaciones y asesoría de ATELIER NÓRDEN.",
+  description:
+    "Diseño arquitectónico, interiorismo, remodelaciones y asesoría técnica de ATELIER NÓRDEN.",
+  alternates: {
+    canonical: "/servicios",
+  },
   openGraph: {
     title: "Servicios · ATELIER NÓRDEN",
-    description: "Diseño arquitectónico, interiorismo, remodelaciones y asesoría.",
+    description:
+      "Diseño arquitectónico, interiorismo, remodelaciones y asesoría para proyectos en Colombia.",
     type: "website",
+    url: "/servicios",
   },
 };
 
 export default function ServiciosPage() {
   return (
-    <div className="flex flex-col">
-      <section className="relative py-24 md:py-32 overflow-hidden">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto relative z-10">
-          <Reveal className="mb-16 md:mb-24">
-            <SectionTitle
-              title="Servicios"
-              subtitle="Acompañamos cada proyecto desde la primera escucha hasta la ejecución final, con atención al detalle y a los materiales."
-            />
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger">
-              {SERVICES.map((service) => (
-                <div key={service.title} className="reveal p-10 rounded-lg border border-stone-soft bg-white shadow-sm">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="size-12 rounded-full border border-stone-soft flex items-center justify-center text-charcoal">
-                      {service.icon === "Building2" && <Building2 size={20} strokeWidth={1.5} aria-hidden="true" />}
-                      {service.icon === "Sofa" && <Sofa size={20} strokeWidth={1.5} aria-hidden="true" />}
-                      {service.icon === "RotateCcw" && <RotateCcw size={20} strokeWidth={1.5} aria-hidden="true" />}
-                      {service.icon === "FileText" && <FileText size={20} strokeWidth={1.5} aria-hidden="true" />}
-                    </div>
-                  </div>
-                  <h3 className="text-display text-lg font-normal text-charcoal mb-3">{service.title}</h3>
-                  <p className="text-sm text-stone-600 leading-relaxed">{service.description}</p>
-                </div>
-              ))}
+    <>
+      <section className="page-hero">
+        <div className="shell">
+          <div className="page-hero__grid">
+            <div>
+              <p className="eyebrow text-muted">04 / Servicios</p>
+              <h1 className="headline-xl page-hero__title mt-6">
+                El proyecto completo o la parte que necesitas.
+              </h1>
             </div>
-          </Reveal>
-
-          <Reveal delay={0.6} className="mt-16 md:mt-20 rounded-lg border border-stone-soft bg-warm-white p-10 md:p-16 text-center">
-            <h3 className="text-display text-xl font-normal text-charcoal mb-4">¿No encuentras lo que buscas?</h3>
-            <p className="text-sm text-stone-600 mb-6">
-              Cada encargo es distinto. Cuéntanos tu idea y definiremos juntos el alcance del proyecto.
-            </p>
-            <a
-              href="/contacto"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border border-stone-soft text-sm font-medium text-charcoal hover:bg-charcoal hover:text-white transition-colors focus-visible:outline-none"
-            >
-              Contactar
-            </a>
-          </Reveal>
+            <div className="page-hero__intro">
+              <p className="body-lg">
+                Acompañamos cada encargo desde la primera escucha hasta la
+                ejecución final, con atención al detalle y a los materiales.
+              </p>
+              <p className="body-base mt-5 text-sm">
+                El alcance se define caso a caso según el lugar, el programa y
+                el momento en que nos convocas.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
-    </div>
+
+      <section className="section services-band">
+        <div className="shell">
+          <SectionHead
+            index="01"
+            label="Áreas de trabajo"
+            title="Cuatro maneras de intervenir un espacio."
+            intro="Desde la idea inicial hasta la obra, con la misma atención a la proporción, la luz y la materia."
+          />
+
+          <div>
+            {SERVICES.map((service, index) => (
+              <div key={service.title} className="service-row">
+                <span className="service-row__index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h2 className="service-row__title">{service.title}</h2>
+                <p className="service-row__description">{service.description}</p>
+                <ArrowUpRight
+                  className="service-row__arrow"
+                  size={22}
+                  strokeWidth={1.2}
+                  aria-hidden="true"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="shell">
+          <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+            <div>
+              <p className="eyebrow text-muted">02 / Alcance</p>
+              <h2 className="headline-lg mt-6">Cómo se traduce en el día a día.</h2>
+            </div>
+
+            <div className="grid gap-8 sm:grid-cols-2">
+              <div className="border-t border-line pt-5">
+                <p className="eyebrow text-oxide">01</p>
+                <h3 className="headline-sm mt-3">Diseño y documentación</h3>
+                <p className="body-base mt-3 text-sm">
+                  Del concepto a los planos y detalles necesarios para construir,
+                  cuidando la coherencia entre lo pensado y lo dibujado.
+                </p>
+              </div>
+              <div className="border-t border-line pt-5">
+                <p className="eyebrow text-oxide">02</p>
+                <h3 className="headline-sm mt-3">Materiales y atmósfera</h3>
+                <p className="body-base mt-3 text-sm">
+                  Selección de materiales duraderos, honestos y de bajo
+                  mantenimiento que mejoren con el paso del tiempo.
+                </p>
+              </div>
+              <div className="border-t border-line pt-5">
+                <p className="eyebrow text-oxide">03</p>
+                <h3 className="headline-sm mt-3">Viabilidad y presupuesto</h3>
+                <p className="body-base mt-3 text-sm">
+                  Revisión de normativa, condiciones técnicas y presupuesto antes
+                  de iniciar el proyecto, para decidir con información.
+                </p>
+              </div>
+              <div className="border-t border-line pt-5">
+                <p className="eyebrow text-oxide">04</p>
+                <h3 className="headline-sm mt-3">Acompañamiento de obra</h3>
+                <p className="body-base mt-3 text-sm">
+                  Seguimiento de la ejecución para que el proyecto construido
+                  coincida con el proyecto pensado.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <p className="body-base max-w-lg">
+              Cada encargo es distinto. Cuéntanos tu idea y definiremos juntos el
+              alcance del proyecto.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/contacto" className="btn btn--solid">
+                Contactar
+                <ArrowUpRight size={15} strokeWidth={1.6} aria-hidden="true" />
+              </Link>
+              {SITE.whatsapp && (
+                <a
+                  href={`https://wa.me/${SITE.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--outline"
+                >
+                  WhatsApp
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--tight">
+        <div className="shell">
+          <p className="body-base max-w-3xl text-xs">{SITE.disclaimer}</p>
+        </div>
+      </section>
+    </>
   );
 }

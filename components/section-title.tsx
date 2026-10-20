@@ -1,18 +1,39 @@
-export interface SectionTitleProps {
-  title: string;
-  subtitle?: string;
+import { cn } from "@/lib/utils";
+
+interface SectionHeadProps {
+  index: string;
+  label: string;
+  title: React.ReactNode;
+  intro?: React.ReactNode;
+  action?: React.ReactNode;
   className?: string;
 }
 
-export function SectionTitle({ title, subtitle, className }: SectionTitleProps) {
+/**
+ * Cabecera editorial reutilizable: índice técnico, título de gran escala y
+ * una entradilla opcional. La composición asimétrica mantiene el ritmo de
+ * plano arquitectónico en todo el sitio.
+ */
+export function SectionHead({
+  index,
+  label,
+  title,
+  intro,
+  action,
+  className,
+}: SectionHeadProps) {
   return (
-    <div className={className}>
-      <h2 className="text-display text-3xl md:text-5xl font-normal text-charcoal leading-tight tracking-tighter">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="mt-4 text-lg text-stone-600 leading-relaxed max-w-2xl">{subtitle}</p>
-      )}
-    </div>
+    <header className={cn("section-head", className)}>
+      <div className="section-head__aside">
+        <p className="eyebrow text-muted">
+          {index} <span className="mx-1 opacity-50">/</span> {label}
+        </p>
+        {action}
+      </div>
+      <div className="section-head__title">
+        <h2 className="headline-lg text-balance">{title}</h2>
+        {intro && <div className="body-lg mt-6 max-w-2xl text-pretty">{intro}</div>}
+      </div>
+    </header>
   );
 }

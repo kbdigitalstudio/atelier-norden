@@ -1,22 +1,39 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { PlanFragment } from "@/components/plan-fragment";
 
 export default function NotFound() {
   return (
-    <main className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center">
-      <h1 className="text-5xl md:text-7xl font-normal text-charcoal leading-none tracking-tighter">
-        404
-      </h1>
-      <p className="mt-6 text-lg text-stone-600">
-        La página que buscas no existe.
-      </p>
-      <Link
-        href="/"
-        className="mt-10 inline-block text-sm font-medium text-charcoal underline underline-offset-4 hover:text-sand-dark transition-colors"
+    <section className="page-hero relative overflow-hidden">
+      <div
+        className="pointer-events-none absolute -right-24 top-1/2 hidden w-[34rem] -translate-y-1/2 opacity-30 lg:block"
+        aria-hidden="true"
       >
-        <ArrowLeft className="inline -mr-1.5 size-4" aria-hidden="true" />
-        Volver al inicio
-      </Link>
-    </main>
+        <PlanFragment />
+      </div>
+
+      <div className="shell relative">
+        <p className="eyebrow text-oxide">Error 404</p>
+        <p className="headline-xl mt-6 text-oxide">404</p>
+        <h1 className="headline-lg mt-4 max-w-[16ch]">
+          Esta línea no lleva a ningún espacio.
+        </h1>
+        <p className="body-lg mt-6 max-w-xl">
+          La página que buscas no existe o cambió de lugar. Puedes volver al
+          inicio o recorrer los proyectos.
+        </p>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link href="/proyectos" className="btn btn--solid">
+            Ver proyectos
+            <ArrowUpRight size={15} strokeWidth={1.6} aria-hidden="true" />
+          </Link>
+          <Link href="/" className="btn btn--outline">
+            <ArrowLeft size={15} strokeWidth={1.6} aria-hidden="true" />
+            Volver al inicio
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

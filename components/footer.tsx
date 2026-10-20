@@ -1,60 +1,88 @@
 import Link from "next/link";
-import { Camera } from "lucide-react";
-import { SITE } from "@/lib/data";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
+import { PROJECTS, SITE } from "@/lib/data";
+
+const FOOTER_LINKS = [
+  { href: "/", label: "Inicio" },
+  { href: "/proyectos", label: "Proyectos" },
+  { href: "/estudio", label: "Estudio" },
+  { href: "/servicios", label: "Servicios" },
+  { href: "/contacto", label: "Contacto" },
+  { href: "/privacidad", label: "Privacidad" },
+] as const;
 
 export function Footer() {
   return (
-    <footer className="border-t border-stone-soft bg-charcoal text-stone-soft py-12 md:py-16">
-      <div className="px-6 md:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-display text-lg font-bold text-white">ATELIER NÓRDEN</span>
-            <span className="text-xs font-medium text-sand tracking-widest uppercase">portafolio</span>
-          </div>
-
-          <nav className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-stone">
-            <Link href="/" className="hover:text-white transition-colors">
-              Inicio
-            </Link>
-            <Link href="/proyectos" className="hover:text-white transition-colors">
-              Proyectos
-            </Link>
-            <Link href="/estudio" className="hover:text-white transition-colors">
-              Estudio
-            </Link>
-            <Link href="/servicios" className="hover:text-white transition-colors">
-              Servicios
-            </Link>
-            <Link href="/contacto" className="hover:text-white transition-colors">
-              Contacto
-            </Link>
-            <Link href="/privacidad" className="hover:text-white transition-colors">
-              Privacidad
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3 text-sm">
-            <a
-              href={SITE.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="inline-flex items-center justify-center size-8 rounded-full border border-sand/40 hover:border-sand hover:text-white transition-colors"
-            >
-              <Camera size={16} strokeWidth={1.5} />
-            </a>
+    <footer className="site-footer">
+      <div className="shell">
+        <div className="site-footer__top">
+          <div className="site-footer__brand">
+            <p className="site-footer__wordmark">ATELIER NÓRDEN</p>
+            <p className="eyebrow mt-4 text-sand">Del trazo al espacio</p>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-paper-light/60">
+              {SITE.tagline} Arquitectura, interiorismo y remodelación desde
+              Villavicencio, Colombia.
+            </p>
             <a
               href={`mailto:${SITE.email}`}
-              className="hover:text-white underline underline-offset-2 transition-colors"
+              className="mt-8 inline-flex items-center gap-2 text-sm text-paper-light/80 transition-colors hover:text-paper-light"
             >
               {SITE.email}
+              <ArrowUpRight size={14} strokeWidth={1.6} aria-hidden="true" />
             </a>
+          </div>
+
+          <div className="site-footer__columns">
+            <div>
+              <h2 className="site-footer__heading">Navegación</h2>
+              <nav className="site-footer__links" aria-label="Navegación del pie de página">
+                {FOOTER_LINKS.map((link) => (
+                  <Link key={link.href} href={link.href}>
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            <div>
+              <h2 className="site-footer__heading">Proyectos</h2>
+              <nav className="site-footer__links" aria-label="Proyectos">
+                {PROJECTS.map((project) => (
+                  <Link key={project.slug} href={`/proyectos/${project.slug}`}>
+                    {project.title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            <div>
+              <h2 className="site-footer__heading">Estudio</h2>
+              <address className="site-footer__links not-italic">
+                <span>{SITE.address}</span>
+                <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+                {SITE.whatsapp && (
+                  <a
+                    href={`https://wa.me/${SITE.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WhatsApp
+                  </a>
+                )}
+              </address>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 md:mt-12 border-t border-sand/20 pt-8 md:pt-10 text-xs text-sand/60 text-center md:text-left">
-          {`${SITE.name} — Proyecto de portafolio para KB Digital Studio.`}<br />
-          Los proyectos y contenidos son conceptuales y no representan clientes reales.
+        <div className="site-footer__bottom">
+          <span>© 2026 {SITE.name}</span>
+          <span className="max-w-xl normal-case tracking-normal">
+            {SITE.disclaimer}
+          </span>
+          <a href="#contenido-principal" className="inline-flex items-center gap-2">
+            Volver arriba
+            <ArrowUp size={12} strokeWidth={1.6} aria-hidden="true" />
+          </a>
         </div>
       </div>
     </footer>

@@ -1,42 +1,51 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { ProjectFilters } from "./project-filters";
 import { ProjectGrid } from "./project-grid";
-import { PROJECTS } from "@/lib/data";
+import { PROJECTS, PROJECT_CATEGORIES, type ProjectCategory } from "@/lib/data";
 
 export function ProjectGallery() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<ProjectCategory | null>(null);
+
+  const counts = useMemo(
+    () =>
+      PROJECT_CATEGORIES.reduce(
+        (accumulator, category) => {
+          accumulator[category.value] = PROJECTS.filter(
+            (project) => project.category === category.value,
+          ).length;
+          return accumulator;
+        },
+        {} as Record<ProjectCategory, number>,
+      ),
+    [],
+  );
 
   const filteredProjects = useMemo(
     () =>
       activeCategory
-        ? PROJECTS.filter((p) => p.category === activeCategory)
+        ? PROJECTS.filter((project) => project.category === activeCategory)
         : PROJECTS,
     [activeCategory],
   );
 
   return (
     <>
-      <div className="flex items-end gap-3">
-        {activeCategory && (
-          <button
-            onClick={() => setActiveCategory(null)}
-            aria-label="Limpiar filtros"
-            className="hidden sm:block px-4 py-2.5 rounded-full border border-stone-soft text-xs font-medium text-charcoal hover:bg-stone-soft transition-colors focus-visible:outline-none"
-          >
-            <X size={14} strokeWidth={2} /> Limpiar filtros
-          </button>
-        )}
-        <ProjectFilters onChange={setActiveCategory} current={activeCategory} />
+      <div className="project-filter-bar">
+        <ProjectFilters
+          value={activeCategory}
+          onChange={setActiveCategory}
+          counts={counts}
+          total={PROJECTS.length}
+        />
+        <p className="eyebrow text-muted" role="status" aria-live="polite">
+          {String(filteredProjects.length).padStart(2, "0")} de{" "}
+          {String(PROJECTS.length).padStart(2, "0")} proyectos
+        </p>
       </div>
 
-      <p className="text-sm text-stone-500 mb-10 md:mb-16">
-        {filteredProjects.length} proyecto{filteredProjects.length !== 1 ? "s" : ""} encontrado{filteredProjects.length !== 1 ? "s" : ""}
-      </p>
-
-      <ProjectGrid projects={filteredProjects} />
+      <ProjectGrid key={activeCategory ?? "todas"} projects={filteredProjects} />
     </>
   );
 }

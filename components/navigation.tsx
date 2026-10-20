@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
+import { SITE } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -12,141 +13,249 @@ const NAV_LINKS = [
   { href: "/estudio", label: "Estudio" },
   { href: "/servicios", label: "Servicios" },
   { href: "/contacto", label: "Contacto" },
-];
+] as const;
 
 export function Navigation() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLButtonElement>(null);
+  const [menuPath, setMenuPath] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const open = menuPath === pathname;
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const closeMenu = useCallback(() => {
-    setOpen(false);
-    // Devuelve el foco al disparador al cerrar para navegar por teclado sin perder la referencia
-    menuRef.current?.focus();
+  const unlockScroll = useCallback(() => {
+    document.body.classList.remove("menu-open");
   }, []);
 
-  // Clic fuera y tecla Escape para cerrar el menú móvil
+  const closeForNavigation = useCallback(() => {
+    setMenuPath(null);
+    unlockScroll();
+  }, [unlockScroll]);
+
+  const closeMenu = useCallback(() => {
+    setMenuPath(null);
+    unlockScroll();
+    // El foco vuelve al disparador solo cuando el cierre lo inicia la persona
+    // (Escape o botón de cierre), no al navegar a otra página.
+    // `preventScroll` evita que devolver el foco al header sticky arrastre la
+    // página hacia arriba y destruya la posición que el scroll lock protegía.
+    window.requestAnimationFrame(() => triggerRef.current?.focus({ preventScroll: true }));
+  }, [unlockScroll]);
+
+  const openMenu = useCallback(() => {
+    document.body.classList.add("menu-open");
+    setMenuPath(pathname);
+  }, [pathname]);
+
+  // El panel se cierra al cambiar de ruta: `open` se deriva de la ruta actual.
+  // `popstate` cubre el botón atrás del navegador sin setState en un efecto.
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (open && menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (open && e.key === "Escape") {
+    const handlePopState = () => setMenuPath(null);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Sombra/fondo del header al abandonar la portada.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Bloqueo de scroll, foco inicial y trampa de foco mientras el panel está abierto.
+  useEffect(() => {
+    if (!open) return;
+
+    const panel = panelRef.current;
+    const body = document.body;
+    const previousOverflow = body.style.overflow;
+
+    body.classList.add("menu-open");
+    body.style.overflow = "hidden";
+
+    const focusTimer = window.setTimeout(
+      () => closeButtonRef.current?.focus({ preventScroll: true }),
+      40,
+    );
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
         closeMenu();
+        return;
+      }
+
+      if (event.key !== "Tab" || !panel) return;
+
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.offsetParent !== null);
+
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
-    document.addEventListener("mousedown", handleClick);
-    document.addEventListener("keydown", handleKeydown);
+
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("keydown", handleKeydown);
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      body.classList.remove("menu-open");
+      body.style.overflow = previousOverflow;
     };
   }, [open, closeMenu]);
 
+  const isTransparent = pathname === "/" && !scrolled && !open;
+
   return (
     <>
-      <nav className="sticky top-0 z-50 border-b border-stone-soft bg-warm-white/80 backdrop-blur-md">
-        <div className="flex items-center justify-between px-6 py-4 md:px-8 md:py-5">
-          <Link
-            href="/"
-            className="text-display text-xl font-bold tracking-tight text-charcoal"
-            aria-label="ATELIER NÓRDEN — inicio"
-          >
-            ATELIER NÓRDEN
+      <header
+        className={cn(
+          "site-header",
+          isTransparent ? "site-header--transparent" : "site-header--solid",
+        )}
+      >
+        <div className="shell site-header__inner">
+          <Link href="/" className="wordmark" aria-label="ATELIER NÓRDEN — inicio">
+            <span>ATELIER</span>
+            <span className="wordmark__mark">NÓRDEN</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "transition-colors hover:text-sand-dark",
-                  pathname === link.href ? "text-charcoal font-semibold" : "text-stone-600",
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          <nav className="desktop-nav" aria-label="Navegación principal">
+            {NAV_LINKS.map((link) => {
+              const isActive =
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className="desktop-nav__link"
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-          <div className="md:hidden">
+          <div className="flex items-center gap-5">
+            <Link
+              href="/contacto"
+              className={cn(
+                "btn header-cta",
+                isTransparent ? "btn--outline-light" : "btn--outline",
+              )}
+            >
+              Hablemos
+              <ArrowUpRight size={15} strokeWidth={1.6} aria-hidden="true" />
+            </Link>
+
             <button
-              ref={menuRef}
-              onClick={() => setOpen((prev) => !prev)}
+              ref={triggerRef}
+              type="button"
+              onClick={() => (open ? closeMenu() : openMenu())}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              aria-label={open ? "Cerrar menú" : "Abrir menú"}
-              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-charcoal hover:text-sand-dark focus-visible:outline-none transition-colors"
+              aria-label={open ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
+              className="menu-trigger"
             >
-              {open ? (
-                <X size={22} strokeWidth={2} />
-              ) : (
-                "Menú"
-              )}
+              {open ? "Cerrar" : "Menú"}
+              <span className="menu-trigger__lines" aria-hidden="true">
+                <span />
+                <span />
+              </span>
             </button>
           </div>
         </div>
-      </nav>
+      </header>
 
-      {/* Menú móvil */}
       {open && (
         <div
+          ref={panelRef}
           id="mobile-menu"
-          className="fixed inset-0 z-[60] flex flex-col bg-warm-white"
+          className="mobile-menu"
+          role="dialog"
+          aria-modal="true"
           aria-labelledby="mobile-menu-title"
         >
-          <div className="flex items-center justify-between px-6 py-5 border-b border-stone-soft">
-            <h2 id="mobile-menu-title" className="sr-only">
-              Menú de navegación
-            </h2>
+          <div className="mobile-menu__top">
+            <p id="mobile-menu-title" className="wordmark">
+              <span>ATELIER</span>
+              <span className="wordmark__mark">NÓRDEN</span>
+            </p>
             <button
+              ref={closeButtonRef}
+              type="button"
               onClick={closeMenu}
-              aria-label="Cerrar menú"
-              className="inline-flex items-center justify-center p-2 text-charcoal hover:text-sand-dark focus-visible:outline-none transition-colors"
+              aria-label="Cerrar menú de navegación"
+              className="mobile-menu__close"
             >
-              <X size={22} strokeWidth={2} />
+              <X size={24} strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1">
-            <nav className="space-y-1">
-              {NAV_LINKS.map((link) => {
-                const isActive = pathname === link.href;
+
+          <div className="mobile-menu__scroll">
+            <nav aria-label="Navegación móvil">
+              {NAV_LINKS.map((link, index) => {
+                const isActive =
+                  link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={closeMenu}
-                    className={cn(
-                      "block px-4 py-3 text-base font-medium transition-colors rounded-md",
-                      isActive
-                        ? "bg-stone-soft text-charcoal"
-                        : "text-stone-600 hover:bg-stone-soft hover:text-charcoal",
-                    )}
+                    onClick={closeForNavigation}
+                    aria-current={isActive ? "page" : undefined}
+                    className="mobile-menu__link"
                   >
-                    {link.label}
+                    <span className="mobile-menu__index" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span>{link.label}</span>
                   </Link>
                 );
               })}
             </nav>
-            <div className="mt-8 border-t border-stone-soft pt-6 space-y-3">
-              <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block px-4 py-3 text-base font-medium text-charcoal hover:bg-stone-soft rounded-md transition-colors"
-              >
-                Escríbenos por WhatsApp
-              </a>
-              <a
-                href="/contacto"
-                onClick={closeMenu}
-                className="block px-4 py-3 text-base font-medium text-stone-dark border border-sand rounded-md hover:bg-stone-soft transition-colors"
-              >
-                Formulario de contacto
-              </a>
+
+            <div className="mobile-menu__aside">
+              <p className="eyebrow text-muted">Contacto directo</p>
+              <div className="mt-4 grid gap-2 text-sm">
+                <a href={`mailto:${SITE.email}`} className="link-line justify-self-start">
+                  {SITE.email}
+                </a>
+                <a href={`tel:${SITE.phoneHref}`} className="link-line justify-self-start">
+                  {SITE.phone}
+                </a>
+              </div>
+
+              <div className="mobile-menu__utility">
+                <Link href="/privacidad" onClick={closeForNavigation}>
+                  Privacidad
+                </Link>
+                {SITE.whatsapp && (
+                  <a
+                    href={`https://wa.me/${SITE.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={closeForNavigation}
+                  >
+                    WhatsApp
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
